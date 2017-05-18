@@ -14,9 +14,9 @@ GLuint model;
 GLfloat angle =0, fAspect;
 char ch='1';
 
-//other functions and main
+//------------ Funcs -------------- \\
 
-//.obj loader code begins
+//read what key was pressed and moves the obj according to it
 void SpecialKeys(int key, int x, int y){
 	switch (key) {
 		case GLUT_KEY_LEFT : 
@@ -49,6 +49,7 @@ void SpecialKeys(int key, int x, int y){
 	glutPostRedisplay();
 }
 
+//open the obj file and populates the matrix
 void loadObj(char *fname){
 	FILE *fp;
 	int read;
@@ -78,9 +79,8 @@ void loadObj(char *fname){
 	fclose(fp);
 }
 
-//.obj loader code ends here
 
-
+//draw the obj according to translation, scale and rotation
 void draw(){
  	glPushMatrix();
 	glTranslatef(0,0,-5);
@@ -95,31 +95,33 @@ void draw(){
  	//if(modelrot>360)modeltrot = modeltrot-360;
 }
 
+//shows view
 void display(void){  
-   	//glClearColor (0.0f,0.0f,0.0f,1.0f); 
+
    	glClear (GL_COLOR_BUFFER_BIT);
    	glLoadIdentity();
    	draw();
    	glutSwapBuffers(); //swap the buffers
 }
 
+//defines the position of the observer and model
 void ViewerPosition(void)
 {
-	// Especifica sistema de coordenadas do modelo
+	// Specifies model coordinates
 	glMatrixMode(GL_MODELVIEW);
-	// Inicializa sistema de coordenadas do modelo
+	// Initialize model coordinates
 	glLoadIdentity();
-	// Especifica posição do observador e do alvo
-	//eyex,eyey,eyez,centerx,centery,centerz,upx,upy,upz 
+	// Specifies observer and target position
+	// (eyex,eyey,eyez, centerx,centery,centerz, upx,upy,upz)
 	gluLookAt(obsX,obsY,obsZ, 0,0,0, 0,0,0);
 }
 
-// Função usada para especificar o volume de visualização
-void EspecificaParametrosVisualizacao(void)
+// Specifies the view volume
+void setProjection(void)
 {
-	// Especifica sistema de coordenadas de projeção
+	// Specifies projection coordinates
 	glMatrixMode(GL_PROJECTION);
-	// Inicializa sistema de coordenadas de projeção
+	// Initialize projection coordinates
 	glLoadIdentity();
 	
 	// Especifica a projeção perspectiva(angulo,aspecto,zMin,zMax)
@@ -142,7 +144,7 @@ void MouseHandler(int button, int state, int x, int y)
 		if (state == GLUT_DOWN) {  // Zoom-out
 			if (angle <= 130) angle += 5;
 		}
-	EspecificaParametrosVisualizacao();
+	setProjection();
 	glutPostRedisplay();
 }
 void WindowSizeChange(int w,int h){
@@ -154,13 +156,13 @@ void WindowSizeChange(int w,int h){
 	// Calcula a correção de aspecto
 	fAspect = (GLfloat)w/(GLfloat)h;
 	
-	EspecificaParametrosVisualizacao();
+	setProjection();
 	//glOrtho(-25,25,-2,2,0.1,100);	
 	//glMatrixMode(GL_MODELVIEW);
 }
 
 // Inicializa parâmetros de rendering
-void Init (void){ 
+void initBackground (void){ 
 	//vai limpar a tela e pintar de preto.
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	angle=60;
@@ -180,7 +182,7 @@ int main(int argc,char **argv){
 	glutReshapeFunc(WindowSizeChange);
 	glutSpecialFunc(SpecialKeys);
 
-	Init();
+	initBackground();
 	//glutIdleFunc(display);
     
 	glutMainLoop();
