@@ -144,6 +144,8 @@ void MouseHandler(int button, int state, int x, int y)
 	setProjection();
 	glutPostRedisplay();
 }
+
+
 void WindowSizeChange(int w,int h){
 	// Prevines division by zero
 	if ( h == 0 ) h = 1;
