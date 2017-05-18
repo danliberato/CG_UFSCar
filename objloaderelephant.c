@@ -1,5 +1,5 @@
 //header
-
+//TESTE DO VIADAO
 
 #define STB_IMAGE_IMPLEMENTATION
 
@@ -14,7 +14,7 @@ GLuint model;
 GLfloat angle =0, fAspect;
 char ch='1';
 
-//------------ Funcs -------------- \\
+//------------ Funcs ----------------\\
 
 //read what key was pressed and moves the obj according to it
 void SpecialKeys(int key, int x, int y){
