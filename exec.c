@@ -8,13 +8,23 @@
 #include <stdio.h>
 #include <string.h>
 //globals
-GLdouble obsX=0, obsY=0, obsZ=0, objScaleX = 1, objScaleY = 1, objScaleZ = 1;//Initial position of observer and obj
+GLdouble obsX, obsY, obsZ, objScaleX, objScaleY, objScaleZ;//Initial position of observer and obj
 GLint windowWidth = 800, windowHeight = 450;
 GLuint model;
-GLfloat fov =60, fAspect;
-char ch='1';
+GLfloat fov, fAspect;
 
 //------------ Funcs ----------------\\
+
+//set the default position
+void setDefaultPosition(){
+	obsX = 0;
+	obsY = 0;
+	obsZ = 0;
+	objScaleX = 1;
+	objScaleY = 1;
+	objScaleZ = 1;
+	fov = 60;
+}
 
 //read what key was pressed and moves the obj according to it
 void specialKeys(int key, int x, int y){
@@ -42,6 +52,8 @@ void specialKeys(int key, int x, int y){
 	glutPostRedisplay();
 }
 
+
+//
 void keyPressed(unsigned char key, int x, int y) {  
 	switch (key) {
 		case 'a' : 
@@ -61,6 +73,9 @@ void keyPressed(unsigned char key, int x, int y) {
 			break;
 		case 'e' : 
 			objScaleZ -=0.1;
+			break;
+		case ' ' : 
+			setDefaultPosition();
 			break;
 	}
 	glLoadIdentity();
@@ -189,6 +204,7 @@ int main(int argc,char **argv){
 		printf("Error! Correct use: ./exec \"path/modelFile.obj\"");
 	}
 	else{
+		setDefaultPosition();
 		char modelFile[80];
 		glutInit(&argc,argv);
 		glutInitDisplayMode(GLUT_DOUBLE);
