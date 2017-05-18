@@ -9,7 +9,7 @@
 #include<stdio.h>
 
 //globals
-GLdouble obsX=0, obsY=60, obsZ=0;
+GLdouble obsX=20, obsY=50, obsZ=0; //Initial position of obj
 GLuint model;
 GLfloat angle =0, fAspect;
 char ch='1';
@@ -35,6 +35,12 @@ void SpecialKeys(int key, int x, int y){
 			obsZ +=10;
 			break;
 		case GLUT_KEY_END : 
+			obsZ -=10;
+			break;
+		case GLUT_KEY_PAGE_UP : 
+			obsZ +=10;
+			break;
+		case GLUT_KEY_PAGE_DOWN : 
 			obsZ -=10;
 			break;
 	}
@@ -77,14 +83,12 @@ void loadObj(char *fname){
 
 void draw(){
  	glPushMatrix();
-// 	glTranslatef(0,-40.00,-305);
 	glTranslatef(0,0,-5);
  	glColor3f(1.0,2.23,0.27);
  	glScalef(1,1,1);
  	glRotatef (obsX, 1,0,0);  // Up and down arrow keys 'tip' view.
 	glRotatef (obsY, 0,1,0);  // Right/left arrow keys 'turn' view.
-	glRotatef(obsZ,0,0,1);
- 	//glRotatef(elephantrot,0,1,0);
+	glRotatef (obsZ,0,0,1);
  	glCallList(model);
  	glPopMatrix();
  	//modelrot=modeltrot+0.6;
@@ -120,12 +124,9 @@ void EspecificaParametrosVisualizacao(void)
 	
 	// Especifica a projeção perspectiva(angulo,aspecto,zMin,zMax)
 	//fovy é o ângulo, em graus, na direção y (usada para determinar a "altura" do volume de visualização); 
-	//aspect é a razão de aspecto que determina a área de visualização na direção x,
-	//e seu valor é a razão em x (largura) e y (altura); 
-	//zNear, que sempre tem que ter um valor positivo maior do que zero, 
-	//é a distância do observador até o plano de corte mais próximo (em z);
-	//zFar, que também sempre tem que ter um valor positivo maior do que zero, 
-	//é a distância do observador até o plano de corte mais afastado (em z).
+	//aspect é a razão de aspecto que determina a área de visualização na direção x, e seu valor é a razão em x (largura) e y (altura); 
+	//zNear, que sempre tem que ter um valor positivo, é a distância do observador até o plano de corte mais próximo (em z);
+	//zFar, que também sempre tem que ter um valor positivo, é a distância do observador até o plano de corte mais afastado (em z).
 	gluPerspective(angle,fAspect,0.5,1000);
 
 	ViewerPosition();
@@ -179,7 +180,7 @@ int main(int argc,char **argv){
 	glutReshapeFunc(WindowSizeChange);
 	glutSpecialFunc(SpecialKeys);
 
-    Init();
+	Init();
 	//glutIdleFunc(display);
     
 	glutMainLoop();
