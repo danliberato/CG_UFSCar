@@ -2,11 +2,11 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 
-#include<GL/gl.h>
-#include<GL/glut.h>
+#include <GL/gl.h>
+#include <GL/glut.h>
 #include "thirdpartysrc/stb_image.h"
-#include<stdio.h>
-
+#include <stdio.h>
+#include <string.h>
 //globals
 GLdouble obsX=20, obsY=50, obsZ=0; //Initial position of obj
 GLuint model;
@@ -164,21 +164,29 @@ void initBackground (void){
 }
 
 int main(int argc,char **argv){
-	glutInit(&argc,argv);
-	glutInitDisplayMode(GLUT_DOUBLE);
-	glutInitWindowSize(800,450);
-	glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH)-640)/2,
-		(glutGet(GLUT_SCREEN_HEIGHT)-480)/2);
-	glutCreateWindow("3D Visualizer");
-	loadObj("data/Avent.obj");
-	glutMouseFunc(MouseHandler);
-	glutSetCursor(GLUT_CURSOR_FULL_CROSSHAIR);
-	glutDisplayFunc(display);
-	glutReshapeFunc(WindowSizeChange);
-	glutSpecialFunc(SpecialKeys);
+	if(argc < 2){
+		printf("Error! Correct use: ./exec modelFile.obj");
+	}
+	else{
+		char modelFile[80];
+		strcpy(modelFile,"data/");
+		strcat(modelFile,argv[1]);
+		glutInit(&argc,argv);
+		glutInitDisplayMode(GLUT_DOUBLE);
+		glutInitWindowSize(800,450);
+		glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH)-640)/2,
+			(glutGet(GLUT_SCREEN_HEIGHT)-480)/2);
+		glutCreateWindow("3D Visualizer");
+		loadObj(modelFile);
+		glutMouseFunc(MouseHandler);
+		glutSetCursor(GLUT_CURSOR_FULL_CROSSHAIR);
+		glutDisplayFunc(display);
+		glutReshapeFunc(WindowSizeChange);
+		glutSpecialFunc(SpecialKeys);
 
-	initBackground();
-    
-	glutMainLoop();
+		initBackground();
+		
+		glutMainLoop();
+	}
 	return 0;
 }
