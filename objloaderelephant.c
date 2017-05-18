@@ -1,13 +1,17 @@
 //header
 
+
+#define STB_IMAGE_IMPLEMENTATION
+
 #include<GL/gl.h>
 #include<GL/glut.h>
+#include"thirdpartysrc/stb_image.h"
 #include<stdio.h>
 
 //globals
-GLdouble obsX=0, obsY=0, obsZ=200;
+GLdouble obsX=0, obsY=60, obsZ=0;
 GLuint model;
-GLfloat angle =60, fAspect;
+GLfloat angle =0, fAspect;
 char ch='1';
 
 //other functions and main
@@ -34,7 +38,7 @@ void SpecialKeys(int key, int x, int y){
 			obsZ -=10;
 			break;
 	}
-	//glLoadIdentity();
+	glLoadIdentity();
 	//gluLookAt(obsX,obsY,obsZ, 0,0,0, 0,1,0);
 	glutPostRedisplay();
 }
@@ -73,9 +77,10 @@ void loadObj(char *fname){
 
 void draw(){
  	glPushMatrix();
- 	glTranslatef(0,-40.00,-105);
- 	glColor3f(1.0,3.23,0.27);
- 	glScalef(0.1,0.1,0.1);
+// 	glTranslatef(0,-40.00,-305);
+	glTranslatef(0,0,-5);
+ 	glColor3f(1.0,2.23,0.27);
+ 	glScalef(1,1,1);
  	glRotatef (obsX, 1,0,0);  // Up and down arrow keys 'tip' view.
 	glRotatef (obsY, 0,1,0);  // Right/left arrow keys 'turn' view.
 	glRotatef(obsZ,0,0,1);
@@ -102,7 +107,7 @@ void ViewerPosition(void)
 	glLoadIdentity();
 	// Especifica posição do observador e do alvo
 	//eyex,eyey,eyez,centerx,centery,centerz,upx,upy,upz 
-	gluLookAt(obsX,obsY,obsZ, 0,0,0, 0,1,0);
+	gluLookAt(obsX,obsY,obsZ, 0,0,0, 0,0,0);
 }
 
 // Função usada para especificar o volume de visualização
@@ -164,11 +169,12 @@ int main(int argc,char **argv){
 	glutInit(&argc,argv);
 	glutInitDisplayMode(GLUT_DOUBLE);
 	glutInitWindowSize(800,450);
-glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH)-640)/2,
-                       (glutGet(GLUT_SCREEN_HEIGHT)-480)/2);
+	glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH)-640)/2,
+		(glutGet(GLUT_SCREEN_HEIGHT)-480)/2);
 	glutCreateWindow("Vizualizador 3D");
-	loadObj("data/elepham.obj");
+	loadObj("data/Avent.obj");
 	glutMouseFunc(MouseHandler);
+	glutSetCursor(GLUT_CURSOR_FULL_CROSSHAIR);
 	glutDisplayFunc(display);
 	glutReshapeFunc(WindowSizeChange);
 	glutSpecialFunc(SpecialKeys);
