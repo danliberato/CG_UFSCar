@@ -8,15 +8,16 @@
 #include <stdio.h>
 #include <string.h>
 //globals
-GLdouble obsX=20, obsY=50, obsZ=0; //Initial position of obj
+GLdouble obsX=20, obsY=50, obsZ=0, objScaleX = 1, objScaleY = 1, objScaleZ = 1;//Initial position of observer and obj
+GLint windowWidth = 800, windowHeight = 450;
 GLuint model;
-GLfloat angle =0, fAspect;
+GLfloat fov =60, fAspect;
 char ch='1';
 
 //------------ Funcs ----------------\\
 
 //read what key was pressed and moves the obj according to it
-void SpecialKeys(int key, int x, int y){
+void specialKeys(int key, int x, int y){
 	switch (key) {
 		case GLUT_KEY_LEFT : 
 			obsY +=10;
@@ -36,11 +37,30 @@ void SpecialKeys(int key, int x, int y){
 		case GLUT_KEY_END : 
 			obsZ -=10;
 			break;
-		case GLUT_KEY_PAGE_UP : 
-			obsZ +=10;
+	}
+	glLoadIdentity();
+	glutPostRedisplay();
+}
+
+void keyPressed(unsigned char key, int x, int y) {  
+	switch (key) {
+		case 'a' : 
+			objScaleX +=0.1;
 			break;
-		case GLUT_KEY_PAGE_DOWN : 
-			obsZ -=10;
+		case 'd' : 
+			objScaleX -=0.1;
+			break;
+		case 'w' : 
+			objScaleY +=0.1;
+			break;
+		case 's' : 
+			objScaleY -=0.1;
+			break;
+		case 'q' : 
+			objScaleZ +=0.1;
+			break;
+		case 'e' : 
+			objScaleZ -=0.1;
 			break;
 	}
 	glLoadIdentity();
@@ -83,7 +103,7 @@ void draw(){
  	glPushMatrix();
 	glTranslatef(0,0,-5);
  	glColor3f(1.0,2.23,0.27);
- 	glScalef(1,1,1);
+ 	glScalef(objScaleX, objScaleY, objScaleZ);
  	glRotatef (obsX, 1,0,0);  // Up and down arrow keys 'tip' view.
 	glRotatef (obsY, 0,1,0);  // Right/left arrow keys 'turn' view.
 	glRotatef (obsZ,0,0,1);
@@ -125,7 +145,7 @@ void setProjection(void)
 	//aspect determinas the view area on X plan, its value is determined by X and Y ratio; 
 	//zNear, always positive, is the distance from de observer to the closer cut plan;
 	//zFar, always positive, is the distance from the observer to the further.
-	gluPerspective(angle,fAspect,0.5,1000);
+	gluPerspective(fov,fAspect,0.5,1000);
 
 	ViewerPosition();
 }
@@ -135,11 +155,11 @@ void MouseHandler(int button, int state, int x, int y)
 {
 	if (button == GLUT_LEFT_BUTTON)
 		if (state == GLUT_DOWN) {  // Zoom-in
-			if (angle >= 10) angle -= 5;
+			if (fov >= 10) fov -= 5;
 		}
 	if (button == GLUT_RIGHT_BUTTON)
 		if (state == GLUT_DOWN) {  // Zoom-out
-			if (angle <= 130) angle += 5;
+			if (fov <= 130) fov += 5;
 		}
 	setProjection();
 	glutPostRedisplay();
@@ -162,7 +182,6 @@ void WindowSizeChange(int w,int h){
 void initBackground (void){ 
 	//cleans the screen and set the object angle
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	angle=60;
 }
 
 int main(int argc,char **argv){
@@ -175,16 +194,16 @@ int main(int argc,char **argv){
 		strcat(modelFile,argv[1]);
 		glutInit(&argc,argv);
 		glutInitDisplayMode(GLUT_DOUBLE);
-		glutInitWindowSize(800,450);
-		glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH)-640)/2,
-			(glutGet(GLUT_SCREEN_HEIGHT)-480)/2);
+		glutInitWindowSize(windowWidth,windowHeight);
+		glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH)-windowWidth) / 2, (glutGet(GLUT_SCREEN_HEIGHT)-windowHeight)/2);
 		glutCreateWindow("3D Visualizer");
 		loadObj(modelFile);
 		glutMouseFunc(MouseHandler);
 		glutSetCursor(GLUT_CURSOR_FULL_CROSSHAIR);
 		glutDisplayFunc(display);
 		glutReshapeFunc(WindowSizeChange);
-		glutSpecialFunc(SpecialKeys);
+		glutSpecialFunc(specialKeys);
+		glutKeyboardFunc(keyPressed);
 
 		initBackground();
 		
