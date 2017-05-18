@@ -186,17 +186,16 @@ void initBackground (void){
 
 int main(int argc,char **argv){
 	if(argc < 2){
-		printf("Error! Correct use: ./exec modelFile.obj");
+		printf("Error! Correct use: ./exec \"path/modelFile.obj\"");
 	}
 	else{
 		char modelFile[80];
-		strcat(modelFile,argv[1]);
 		glutInit(&argc,argv);
 		glutInitDisplayMode(GLUT_DOUBLE);
 		glutInitWindowSize(windowWidth,windowHeight);
 		glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH)-windowWidth) / 2, (glutGet(GLUT_SCREEN_HEIGHT)-windowHeight)/2);
 		glutCreateWindow("3D Visualizer");
-		loadObj(modelFile);
+		loadObj(argv[1]);
 		glutMouseFunc(MouseHandler);
 		glutSetCursor(GLUT_CURSOR_FULL_CROSSHAIR);
 		glutDisplayFunc(display);
