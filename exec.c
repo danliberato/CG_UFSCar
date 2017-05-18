@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 //globals
-GLdouble obsX=20, obsY=50, obsZ=0, objScaleX = 1, objScaleY = 1, objScaleZ = 1;//Initial position of observer and obj
+GLdouble obsX=0, obsY=0, obsZ=0, objScaleX = 1, objScaleY = 1, objScaleZ = 1;//Initial position of observer and obj
 GLint windowWidth = 800, windowHeight = 450;
 GLuint model;
 GLfloat fov =60, fAspect;
@@ -190,7 +190,6 @@ int main(int argc,char **argv){
 	}
 	else{
 		char modelFile[80];
-		strcpy(modelFile,"data/");
 		strcat(modelFile,argv[1]);
 		glutInit(&argc,argv);
 		glutInitDisplayMode(GLUT_DOUBLE);
