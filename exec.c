@@ -4,7 +4,7 @@
 
 #include<GL/gl.h>
 #include<GL/glut.h>
-#include"thirdpartysrc/stb_image.h"
+#include "thirdpartysrc/stb_image.h"
 #include<stdio.h>
 
 //globals
@@ -25,10 +25,10 @@ void SpecialKeys(int key, int x, int y){
 			obsY -=10;
 			break;
 		case GLUT_KEY_UP : 
-			obsX -=10;
+			obsX +=10;
 			break;
 		case GLUT_KEY_DOWN : 
-			obsX +=10;
+			obsX -=10;
 			break;
 		case GLUT_KEY_HOME : 
 			obsZ +=10;
@@ -44,7 +44,6 @@ void SpecialKeys(int key, int x, int y){
 			break;
 	}
 	glLoadIdentity();
-	//gluLookAt(obsX,obsY,obsZ, 0,0,0, 0,1,0);
 	glutPostRedisplay();
 }
 
@@ -90,8 +89,6 @@ void draw(){
 	glRotatef (obsZ,0,0,1);
  	glCallList(model);
  	glPopMatrix();
- 	//modelrot=modeltrot+0.6;
- 	//if(modelrot>360)modeltrot = modeltrot-360;
 }
 
 //shows view
@@ -111,7 +108,7 @@ void ViewerPosition(void)
 	// Initialize model coordinates
 	glLoadIdentity();
 	// Specifies observer and target position
-	// (eyex,eyey,eyez, centerx,centery,centerz, upx,upy,upz)
+	// (eyeX,eyeY,eyeZ, centerX,centerY,centerZ, upX,upY,upZ)
 	gluLookAt(obsX,obsY,obsZ, 0,0,0, 0,0,0);
 }
 
@@ -123,16 +120,17 @@ void setProjection(void)
 	// Initialize projection coordinates
 	glLoadIdentity();
 	
-	// Especifica a projeção perspectiva(angulo,aspecto,zMin,zMax)
-	//fovy é o ângulo, em graus, na direção y (usada para determinar a "altura" do volume de visualização); 
-	//aspect é a razão de aspecto que determina a área de visualização na direção x, e seu valor é a razão em x (largura) e y (altura); 
-	//zNear, que sempre tem que ter um valor positivo, é a distância do observador até o plano de corte mais próximo (em z);
-	//zFar, que também sempre tem que ter um valor positivo, é a distância do observador até o plano de corte mais afastado (em z).
+	// Specifies the projection perspective (angle,aspect,zNear,zFar)
+	//fovY is the angle, in degrees, on Y plan (it is used to set the "height" of the view volume);
+	//aspect determinas the view area on X plan, its value is determined by X and Y ratio; 
+	//zNear, always positive, is the distance from de observer to the closer cut plan;
+	//zFar, always positive, is the distance from the observer to the further.
 	gluPerspective(angle,fAspect,0.5,1000);
 
 	ViewerPosition();
 }
 
+//manage the events from mouse
 void MouseHandler(int button, int state, int x, int y)
 {
 	if (button == GLUT_LEFT_BUTTON)
@@ -147,22 +145,20 @@ void MouseHandler(int button, int state, int x, int y)
 	glutPostRedisplay();
 }
 void WindowSizeChange(int w,int h){
-	// Para previnir uma divisão por zero
+	// Prevines division by zero
 	if ( h == 0 ) h = 1;
     
 	glViewport(0,0,w,h);
 	
-	// Calcula a correção de aspecto
+	// Aspect correction
 	fAspect = (GLfloat)w/(GLfloat)h;
 	
 	setProjection();
-	//glOrtho(-25,25,-2,2,0.1,100);	
-	//glMatrixMode(GL_MODELVIEW);
 }
 
-// Inicializa parâmetros de rendering
+// Initialize render parameters
 void initBackground (void){ 
-	//vai limpar a tela e pintar de preto.
+	//cleans the screen and set the object angle
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	angle=60;
 }
@@ -173,7 +169,7 @@ int main(int argc,char **argv){
 	glutInitWindowSize(800,450);
 	glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH)-640)/2,
 		(glutGet(GLUT_SCREEN_HEIGHT)-480)/2);
-	glutCreateWindow("Vizualizador 3D");
+	glutCreateWindow("3D Visualizer");
 	loadObj("data/Avent.obj");
 	glutMouseFunc(MouseHandler);
 	glutSetCursor(GLUT_CURSOR_FULL_CROSSHAIR);
@@ -182,7 +178,6 @@ int main(int argc,char **argv){
 	glutSpecialFunc(SpecialKeys);
 
 	initBackground();
-	//glutIdleFunc(display);
     
 	glutMainLoop();
 	return 0;
