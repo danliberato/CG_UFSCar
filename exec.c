@@ -9,7 +9,6 @@ GLdouble obsX, obsY, obsZ, objScaleX, objScaleY, objScaleZ;//Initial position of
 GLint windowWidth = 800, windowHeight = 600;
 GLuint model;
 GLfloat fov, fAspect;
-char ch='1';
 //------------ Funcs ----------------\\
 
 //set the default position
@@ -57,17 +56,19 @@ void loadObj(char *fname){
 
 //.obj loader code ends here
 
-void reshape(int w,int h)
-{    
+void reshape(int w,int h){
+	    
 	glViewport(0,0,w,h);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-    gluPerspective (60, (GLfloat)w / (GLfloat)h, 0.1, 1000.0);
+	fAspect = (GLfloat)w / (GLfloat)h;
+    gluPerspective (60, fAspect, 0.1, 1000.0);
 	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 }
 
-void drawModel()
-{
+void drawModel(){
+	
  	glPushMatrix();
  	glTranslatef(0,-20,-55);//model position on scene
  	glColor3f(1.0,0,0);//model color
@@ -80,7 +81,7 @@ void drawModel()
 }
 
 void display(void)
-{  
+{
    	glClearColor (0.0,0.0,0.0,1.0); 
    	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
    	glLoadIdentity();
@@ -116,7 +117,8 @@ void setProjection(void)
 	//zFar, always positive, is the distance from the observer to the further cut plan.
 	gluPerspective(fov,fAspect,0.5,1000);
 
-	ViewerPosition();
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 }
 
 //manage the events from mouse
