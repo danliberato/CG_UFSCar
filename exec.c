@@ -144,7 +144,7 @@ void ViewerPosition(void)
 	glLoadIdentity();
 	// Specifies observer and target position
 	// (eyeX,eyeY,eyeZ, centerX,centerY,centerZ, upX,upY,upZ)
-	gluLookAt(obsX,obsY,obsZ, 0,0,0, 0,0,0);
+	gluLookAt(obsX,obsY,obsZ, 100,100,100, 0,0,0);
 }
 
 // Specifies the view volume
