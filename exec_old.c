@@ -1,15 +1,18 @@
 //header
 
-#include<GL/gl.h>
-#include<GL/glut.h>
-#include<stdio.h>
+#define STB_IMAGE_IMPLEMENTATION
 
+#include <GL/gl.h>
+#include <GL/glut.h>
+#include "thirdpartysrc/stb_image.h"
+#include <stdio.h>
+#include <string.h>
 //globals
 GLdouble obsX, obsY, obsZ, objScaleX, objScaleY, objScaleZ;//Initial position of observer and obj
-GLint windowWidth = 800, windowHeight = 600;
+GLint windowWidth = 800, windowHeight = 450;
 GLuint model;
 GLfloat fov, fAspect;
-char ch='1';
+
 //------------ Funcs ----------------\\
 
 //set the default position
@@ -17,15 +20,13 @@ void setDefaultPosition(){
 	obsX = 0;
 	obsY = 0;
 	obsZ = 0;
-	objScaleX = 0.1;
-	objScaleY = 0.1;
-	objScaleZ = 0.1;
+	objScaleX = 1;
+	objScaleY = 1;
+	objScaleZ = 1;
 	fov = 60;
 }
 
-//other functions and main
-
-//.obj loader code begins
+//open the obj file and populates the matrix
 void loadObj(char *fname){
 	FILE *fp;
 	int read;
@@ -55,38 +56,27 @@ void loadObj(char *fname){
 	fclose(fp);
 }
 
-//.obj loader code ends here
 
-void reshape(int w,int h)
-{    
-	glViewport(0,0,w,h);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-    gluPerspective (60, (GLfloat)w / (GLfloat)h, 0.1, 1000.0);
-	glMatrixMode(GL_MODELVIEW);
-}
-
-void drawModel()
-{
+//draw the obj according to translation, scale and rotation
+void draw(){
  	glPushMatrix();
- 	glTranslatef(0,-20,-55);//model position on scene
- 	glColor3f(1.0,0,0);//model color
- 	glScalef(objScaleX, objScaleY, objScaleZ);//model scale
- 	glRotatef(obsX,1,0,0);//rotate model on X axis
- 	glRotatef(obsY,0,1,0);//rotate model on Y axis
- 	glRotatef(obsZ,0,0,1);//rotate model on Z axis
+	glTranslatef(0,-40,-105);
+ 	glColor3f(1.0,2.23,0.27);
+ 	glScalef(objScaleX, objScaleY, objScaleZ);
+ 	glRotatef (obsX, 1,0,0);  // Up and down arrow keys 'tip' view.
+	glRotatef (obsY, 0,1,0);  // Right/left arrow keys 'turn' view.
+	glRotatef (obsZ,0,0,1);
  	glCallList(model);
  	glPopMatrix();
 }
 
-void display(void)
-{  
-   	glClearColor (0.0,0.0,0.0,1.0); 
-   	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-   	glLoadIdentity();
-   	drawModel();
-   	glutSwapBuffers(); //swap the buffers
+//shows view
+void display(void){  
 
+   	glClear (GL_COLOR_BUFFER_BIT);
+   	glLoadIdentity();
+   	draw();
+   	glutSwapBuffers(); //swap the buffers
 }
 
 //defines the position of the observer and model
@@ -113,7 +103,7 @@ void setProjection(void)
 	//fovY is the angle, in degrees, on Y plan (it is used to set the "height" of the view volume);
 	//aspect determinas the view area on X plan, its value is determined by X and Y ratio; 
 	//zNear, always positive, is the distance from de observer to the closer cut plan;
-	//zFar, always positive, is the distance from the observer to the further cut plan.
+	//zFar, always positive, is the distance from the observer to the further.
 	gluPerspective(fov,fAspect,0.5,1000);
 
 	ViewerPosition();
@@ -166,22 +156,22 @@ void specialKeys(int key, int x, int y){
 void keyPressed(unsigned char key, int x, int y) {  
 	switch (key) {
 		case 'a' : 
-			objScaleX +=0.01;
+			objScaleX +=0.1;
 			break;
 		case 'd' : 
-			objScaleX -=0.01;
+			objScaleX -=0.1;
 			break;
 		case 'w' : 
-			objScaleY +=0.01;
+			objScaleY +=0.1;
 			break;
 		case 's' : 
-			objScaleY -=0.01;
+			objScaleY -=0.1;
 			break;
 		case 'q' : 
-			objScaleZ +=0.01;
+			objScaleZ +=0.1;
 			break;
 		case 'e' : 
-			objScaleZ -=0.01;
+			objScaleZ -=0.1;
 			break;
 		case ' ' : 
 			setDefaultPosition();
@@ -191,22 +181,48 @@ void keyPressed(unsigned char key, int x, int y) {
 	glutPostRedisplay();
 }
 
-int main(int argc,char **argv){
+
+void WindowSizeChange(int w,int h){
+	// Prevines division by zero
+	if ( h == 0 ) h = 1;
+    
+	glViewport(0,0,w,h);
 	
-	glutInit(&argc,argv);
-	setDefaultPosition();
-	glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGB|GLUT_DEPTH);
-	glutInitWindowSize(windowWidth, windowHeight);
-	glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH)-windowWidth) / 2, (glutGet(GLUT_SCREEN_HEIGHT)-windowHeight)/2);
-	glutCreateWindow("3D Visualizer");
-	glutReshapeFunc(reshape);
-	glutMouseFunc(MouseHandler);
-	glutSetCursor(GLUT_CURSOR_FULL_CROSSHAIR);
-    glutDisplayFunc(display);
-	glutIdleFunc(display);
-	glutSpecialFunc(specialKeys);
-	glutKeyboardFunc(keyPressed);
-    loadObj(argv[1]);//replace porsche.obj with radar.obj or any other .obj to display it
-	glutMainLoop();
+	// Aspect correction
+	fAspect = (GLfloat)w/(GLfloat)h;
+	
+	setProjection();
+}
+
+// Initialize render parameters
+void initBackground (void){ 
+	//cleans the screen and set the object angle
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+}
+
+int main(int argc,char **argv){
+	if(argc < 2){
+		printf("Error! Correct use: ./exec \"path/modelFile.obj\"");
+	}
+	else{
+		setDefaultPosition();
+		glutInit(&argc,argv);
+		glutInitDisplayMode(GLUT_DOUBLE);
+		glutInitWindowSize(windowWidth,windowHeight);
+		glutInitWindowPosition((glutGet(GLUT_SCREEN_WIDTH)-windowWidth) / 2, (glutGet(GLUT_SCREEN_HEIGHT)-windowHeight)/2);
+		glutCreateWindow("3D Visualizer");
+		loadObj(argv[1]);
+		glutMouseFunc(MouseHandler);
+		glutSetCursor(GLUT_CURSOR_FULL_CROSSHAIR);
+		glutDisplayFunc(display);
+		glutReshapeFunc(WindowSizeChange);
+		glutSpecialFunc(specialKeys);
+		glutKeyboardFunc(keyPressed);
+		glutIdleFunc(display);
+
+		initBackground();
+		
+		glutMainLoop();
+	}
 	return 0;
 }
