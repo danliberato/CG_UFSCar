@@ -1,5 +1,5 @@
-To compile: gcc -o "exec_name" exec.c -lglut -lGL -lGLU -lm
-To execute: ./exec_name "path/modelFile.obj"
+To compile: g++ -o exec_name exec.cpp shader.cpp controls.cpp objloader.cpp texture.cpp -lGLEW -lglfw -lGL -lX11 -lpthread -lXrandr -lXi
+To execute: ./exec_name 
 
 Commands:
 - "D": stretch model on X axis
