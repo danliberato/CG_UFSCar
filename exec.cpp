@@ -18,7 +18,7 @@ using namespace glm;
 #include "shader.hpp"
 #include "texture.hpp"
 #include "objloader.hpp"
-#include "controls.hpp"
+//#include "controls.hpp"
 
 int main( void )
 {
