@@ -7,15 +7,12 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <SOIL/SOIL.h>
+//#include <SOIL/SOIL.h>
 // ---------CUTSOM_LIBS ----------//
 #include "shader.hpp" 
 #include "texture.hpp"
 #include "objloader.hpp"
 //#include "controls.hpp" -- stil in progress
-// ---------THIRD_PART_LIBS--------- //
-#define STB_IMAGE_IMPLEMENTATION
-#include "libs/stb_image.h"
 using namespace glm;
 //-----------GLOBALS VARIABLES----------//
 GLFWwindow* window;
@@ -100,7 +97,10 @@ int main( void ){
 	glm::mat4 MVP = Projection * View * Model; 
 
 	// Load the texture
-	GLuint Texture = loadDDS("data/uvmap.DDS");
+	printf("Loading textures...\n");
+	//GLuint Texture = loadDDS("data/uvmap.DDS");
+	//GLuint Texture =  getTexture("textures/lego_face.bmp");
+	GLuint Texture =  loadBMP_custom("textures/lego_face.bmp");
 	
 	// Get a handle for our "myTextureSampler" uniform
 	GLuint TextureID  = glGetUniformLocation(programID, "myTextureSampler");
@@ -109,7 +109,7 @@ int main( void ){
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;
 	std::vector<glm::vec3> normals; // Won't be used at the moment.
-	bool res = loadOBJ("data/cube.obj", vertices, uvs, normals);
+	bool res = loadOBJ("data/lego_man.obj", vertices, uvs, normals);
 
 	// Load it into a VBO
 	GLuint vertexbuffer;

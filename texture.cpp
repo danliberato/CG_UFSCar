@@ -3,13 +3,64 @@
 #include <string.h>
 
 #include <GL/glew.h>
-
+#include <SOIL/SOIL.h>
 #include <GLFW/glfw3.h>
 
 
-GLuint loadBMP_custom(const char * imagepath){
 
-	printf("Reading image %s\n", imagepath);
+//trying to implement SOIL texture loader
+GLuint getTexture(const char * imagepath){
+	
+	GLuint texID;
+	
+	/*texID = SOIL_load_OGL_texture( imagepath, SOIL_LOAD_AUTO, 
+	SOIL_CREATE_NEW_ID, 
+	SOIL_FLAG_POWER_OF_TWO | 
+	SOIL_FLAG_MIPMAPS | 
+	SOIL_FLAG_MULTIPLY_ALPHA | 
+	SOIL_FLAG_COMPRESS_TO_DXT | 
+	SOIL_FLAG_INVERT_Y);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); 
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+		if( texID > 0 )
+		{
+			glEnable( GL_TEXTURE_2D );
+			glBindTexture( GL_TEXTURE_2D, texID );
+			
+			return texID;
+		}
+		else
+			return 0;
+			*/
+    texID = SOIL_load_OGL_texture(
+        imagepath,
+        SOIL_LOAD_AUTO,
+        SOIL_CREATE_NEW_ID,
+        SOIL_FLAG_INVERT_Y);
+ 
+    if (!texID)
+    {
+        printf("soil failed to load texture\n");
+        //exit(0);
+    }
+ 
+ 
+    // Typical Texture Generation Using Data From The Bitmap
+    glBindTexture(GL_TEXTURE_2D, texID);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+ 
+    return true;                                        // Return Success
+	
+}
+
+
+GLuint loadBMP_custom(const char * imagepath){
 
 	// Data read from the header of the BMP file
 	unsigned char header[54];
