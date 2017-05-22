@@ -7,17 +7,21 @@
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <SOIL/SOIL.h>
 // ---------CUTSOM_LIBS ----------//
 #include "shader.hpp" 
 #include "texture.hpp"
 #include "objloader.hpp"
 //#include "controls.hpp" -- stil in progress
+// ---------THIRD_PART_LIBS--------- //
+#define STB_IMAGE_IMPLEMENTATION
+#include "libs/stb_image.h"
 using namespace glm;
 //-----------GLOBALS VARIABLES----------//
 GLFWwindow* window;
 
 int main( void ){
-	// Initialise GLFW
+	// Initialize GLFW
 	if(!glfwInit()){
 		fprintf(stderr, "Failed to initialize GLFW\n" );
 		getchar();
