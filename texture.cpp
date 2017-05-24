@@ -6,57 +6,33 @@
 #include <SOIL/SOIL.h>
 #include <GLFW/glfw3.h>
 
-
-
 //trying to implement SOIL texture loader
 GLuint getTexture(const char * imagepath){
 	
 	GLuint texID;
 	
-	/*texID = SOIL_load_OGL_texture( imagepath, SOIL_LOAD_AUTO, 
-	SOIL_CREATE_NEW_ID, 
-	SOIL_FLAG_POWER_OF_TWO | 
-	SOIL_FLAG_MIPMAPS | 
-	SOIL_FLAG_MULTIPLY_ALPHA | 
-	SOIL_FLAG_COMPRESS_TO_DXT | 
-	SOIL_FLAG_INVERT_Y);
-	
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); 
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-		if( texID > 0 )
-		{
-			glEnable( GL_TEXTURE_2D );
-			glBindTexture( GL_TEXTURE_2D, texID );
-			
-			return texID;
-		}
-		else
-			return 0;
-			*/
-    texID = SOIL_load_OGL_texture(
-        imagepath,
-        SOIL_LOAD_AUTO,
-        SOIL_CREATE_NEW_ID,
-        SOIL_FLAG_INVERT_Y);
+	// Create Storage Space For The Texture
+	// Set The Pointer To NULL
+	texID = SOIL_load_OGL_texture(
+			imagepath,
+			SOIL_LOAD_AUTO,
+			SOIL_CREATE_NEW_ID,
+			SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+		);
+ printf("-AEHOO--\n");
+	if( 0 == texID ){
+		printf( "SOIL loading error: '%s'\n", SOIL_last_result() );
+	}else{
  
-    if (!texID)
-    {
-        printf("soil failed to load texture\n");
-        //exit(0);
-    }
+     glGenTextures(1, &texID);               // Create The Texture
  
+     // Typical Texture Generation Using Data From The Bitmap
+     glBindTexture(GL_TEXTURE_2D, texID);
  
-    // Typical Texture Generation Using Data From The Bitmap
-    glBindTexture(GL_TEXTURE_2D, texID);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
- 
-    return true;                                        // Return Success
-	
+     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+     glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+  }
+	return texID;
 }
 
 
@@ -122,10 +98,6 @@ GLuint loadBMP_custom(const char * imagepath){
 	// OpenGL has now copied the data. Free our own version
 	delete [] data;
 
-	// Poor filtering, or ...
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); 
-
 	// ... nice trilinear filtering.
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -136,33 +108,6 @@ GLuint loadBMP_custom(const char * imagepath){
 	// Return the ID of the texture we just created
 	return textureID;
 }
-
-// Since GLFW 3, glfwLoadTexture2D() has been removed. You have to use another texture loading library, 
-// or do it yourself (just like loadBMP_custom and loadDDS)
-/*GLuint loadTGA_glfw(const char * imagepath){
-
-	// Create one OpenGL texture
-	GLuint textureID;
-	glGenTextures(1, &textureID);
-
-	// "Bind" the newly created texture : all future texture functions will modify this texture
-	glBindTexture(GL_TEXTURE_2D, textureID);
-
-	// Read the file, call glTexImage2D with the right parameters
-	//glfwLoadTexture2D(imagepath, 0);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-
-	// Nice trilinear filtering.
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR); 
-	glGenerateMipmap(GL_TEXTURE_2D);
-
-	// Return the ID of the texture we just created
-	return textureID;
-}*/
-
 
 
 #define FOURCC_DXT1 0x31545844 // Equivalent to "DXT1" in ASCII

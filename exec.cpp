@@ -18,6 +18,9 @@ using namespace glm;
 GLFWwindow* window;
 
 int main( void ){
+	
+	int windowWidth = 1024, windowHeight = 768;
+	
 	// Initialize GLFW
 	if(!glfwInit()){
 		fprintf(stderr, "Failed to initialize GLFW\n" );
@@ -28,11 +31,10 @@ int main( void ){
 	glfwWindowHint(GLFW_SAMPLES, 4);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // To make MacOS happy; should not be needed
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	// Open a window and create its OpenGL context
-	window = glfwCreateWindow( 1024, 768, "Vizualizer 3D", NULL, NULL);
+	window = glfwCreateWindow( windowWidth, windowHeight, "Vizualizer 3D", NULL, NULL);
 	if( window == NULL ){
 		fprintf( stderr, "Failed to open GLFW window.\n" );
 		getchar();
@@ -53,11 +55,11 @@ int main( void ){
 	// Ensure we can capture the escape key being pressed below
 	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     // Hide the mouse and enable unlimited mouvement
-    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
     
     // Set the mouse at the center of the screen
     glfwPollEvents();
-    glfwSetCursorPos(window, 1024/2, 768/2);
+    glfwSetCursorPos(window, windowWidth/2, windowHeight/2);
 
 	// Dark blue background
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -99,18 +101,19 @@ int main( void ){
 	// Load the texture
 	printf("Loading textures...\n");
 	//GLuint Texture = loadDDS("data/uvmap.DDS");
-	//GLuint Texture =  getTexture("textures/lego_face.bmp");
-	GLuint Texture =  loadBMP_custom("textures/lego_face.bmp");
+	GLuint Texture =  getTexture("textures/lego_darth_body.bmp");
+	//GLuint Texture =  loadBMP_custom("textures/lego_darth_body.bmp");// DOES WORK!
 	
 	// Get a handle for our "myTextureSampler" uniform
 	GLuint TextureID  = glGetUniformLocation(programID, "myTextureSampler");
 
+	printf("Loading objects...");
 	// Read our .obj file
 	std::vector<glm::vec3> vertices;
 	std::vector<glm::vec2> uvs;
 	std::vector<glm::vec3> normals; // Won't be used at the moment.
-	bool res = loadOBJ("data/lego_man.obj", vertices, uvs, normals);
-
+	bool res = loadOBJ("data/cube.obj", vertices, uvs, normals);
+	
 	// Load it into a VBO
 	GLuint vertexbuffer;
 	glGenBuffers(1, &vertexbuffer);
