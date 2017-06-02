@@ -1,0 +1,42 @@
+newmtl boxwood:lambert2SG
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd dark-wood-2.jpg
+Ni 1.00
+newmtl black
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 0.50 1.00 1.00
+map_Kd leather_texture.jpg
+Ni 1.00
+Ks 0.13 0.13 0.13
+Ns 18.00
+newmtl wire_000000000
+illum 4
+Kd 0.50 0.50 0.50
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.00
+newmtl speed
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd speed.jpg
+Ni 1.00
+newmtl red_button
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd gas_tank.jpg
+Ni 1.00
+newmtl Material__12
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd tire.jpg
