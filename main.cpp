@@ -176,7 +176,7 @@ void DoMovement( ){
     
     if (keys[GLFW_KEY_A] || keys[GLFW_KEY_LEFT]){ 
 		movement_car_foward = movement_car_foward - ((SPEED-8.0f) * deltaTime);   
-        rotate_road -= 0.0004f;
+        rotate_road -= 0.001f;
         if( rotate_road > 89.0f ){
 			rotate_road = 89.0f;
         }
@@ -189,7 +189,7 @@ void DoMovement( ){
     
     if(keys[GLFW_KEY_D] || keys[GLFW_KEY_RIGHT]){
 		movement_car_foward = movement_car_foward +((SPEED-8.0f) * deltaTime);
-        rotate_road += 0.0004f;      
+        rotate_road += 0.001f;      
 		if( rotate_road > 89.0f ){
 			rotate_road = 89.0f;
         }
