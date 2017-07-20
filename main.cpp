@@ -32,7 +32,6 @@ float movement_car_right = 0.0f;
 void KeyCallback( GLFWwindow *window, int key, int scancode, int action, int mode );
 void MouseCallback( GLFWwindow *window, double xPos, double yPos );
 void DoMovement( );
-bool person_3rd = false;
 // Camera
 Camera camera( glm::vec3( 7.15f, 0.3f, 0.0f ) );
 bool keys[1024];
@@ -187,6 +186,14 @@ void DoMovement( ){
 		//camera.ProcessKeyboard( LEFT, deltaTime);
     }
     
+    if(keys[GLFW_KEY_1]){
+		camera.insideCamera();
+	}
+	
+	if(keys[GLFW_KEY_2]){
+		camera.outsideCamera();
+	}
+    
     if(keys[GLFW_KEY_D] || keys[GLFW_KEY_RIGHT]){
 		movement_car_foward = movement_car_foward +((SPEED-8.0f) * deltaTime);
         rotate_road += 0.001f;      
@@ -198,15 +205,6 @@ void DoMovement( ){
 		}
 		//camera.ProcessKeyboard( RIGHT, deltaTime );
     }
-    if(keys[GLFW_KEY_C]){
-		if(!person_3rd){
-			camera.setPos(5.5f, 0.7f, 0.0f );
-			person_3rd = true;
-		}else{
-			camera.setPos(7.15f, 0.3f, 0.0f );
-			person_3rd = false;
-		}
-	}
 }
 
 // Is called whenever a key is pressed/released via GLFW

@@ -113,6 +113,20 @@ public:
         
     }
     
+    //set inside car camera
+    void insideCamera(){
+		this->setPos(7.15f, 0.3f, 0.0f);
+		this->yaw = YAW;
+		this->pitch = PITCH;
+	}
+	
+	//set outside car camera
+	void outsideCamera(){
+		this->setPos(6.15f, 0.7f, 0.0f);
+		this->yaw = YAW;
+		this->pitch = PITCH;
+	}
+    
     GLfloat GetZoom( )
     {
         return this->zoom;
