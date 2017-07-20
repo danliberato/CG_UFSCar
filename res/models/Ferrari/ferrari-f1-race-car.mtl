@@ -1,14 +1,24 @@
 # Blender MTL File: 'None'
 # Material Count: 8
 
-newmtl 898988
+newmtl ground
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.000000 0.000000 0.000000
+Ks 0.000000 0.000000 0.000000
+Ni .000000
+d 0.000000
+illum 2
+
+newmtl tyres
 Ns 96.078431
 Ka 0.000000 0.000000 0.000000
-Kd 0.537255 0.537255 0.533333
-Ks 0.001176 0.001176 0.001176
+Kd 1.000000 1.000000 1.000000
+Ks 0.074902 0.073725 0.073725
 Ni 1.000000
 d 1.000000
 illum 2
+map_Kd tyre.png
 
 newmtl Metal
 Ns 96.078431
@@ -57,6 +67,8 @@ Ks 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
+map_Kd mirrors.jpg
+map_Bump mirrors.jpg
 
 newmtl steering
 Ns 96.078431
@@ -66,6 +78,8 @@ Ks 0.047059 0.046667 0.046667
 Ni 1.000000
 d 1.000000
 illum 2
+map_Kd steering.jpg
+
 
 newmtl tread
 Ns 96.078431

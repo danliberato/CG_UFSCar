@@ -24,15 +24,19 @@
 // Properties
 const GLuint WIDTH = 1280, HEIGHT = 720;
 int SCREEN_WIDTH, SCREEN_HEIGHT;
-
+float movement_car_foward = 0.0f;
+float rotate_car = 1.6f;
+float rotate_road = 0.0f;
+float movement_car_right = 0.0f;
 // Function prototypes
 void KeyCallback( GLFWwindow *window, int key, int scancode, int action, int mode );
 void MouseCallback( GLFWwindow *window, double xPos, double yPos );
 void DoMovement( );
-
+bool person_3rd = false;
 // Camera
-Camera camera( glm::vec3( 0.0f, 3.0f, 6.0f ) );
+Camera camera( glm::vec3( 7.15f, 0.3f, 0.0f ) );
 bool keys[1024];
+glm::mat4 model2;
 GLfloat lastX = WIDTH/2, lastY = HEIGHT/2;
 bool firstMouse = true;
 
@@ -91,15 +95,17 @@ int main(){
     Shader shader( "res/shaders/modelLoading.vs", "res/shaders/modelLoading.frag" );
     
     // Load models
-    //Model ourModel1( "res/models/catherham/Catherham_Seven_Sigma_OBJ.obj" );
     Model ourModel2("res/models/Ferrari/ferrari-f1-race-car.obj");
+    
     // Load models
-	Model ourModel1( "res/models/item01/Item01.obj" );
+	Model ourModel1( "res/models/Roads/AIC.obj" );
     // Draw in wireframe
     //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     
     glm::mat4 projection = glm::perspective( camera.GetZoom( ), ( float )SCREEN_WIDTH/( float )SCREEN_HEIGHT, 0.1f, 500.0f );
-    
+    glm::mat4 model2;
+    //Draw the second loaded model
+        
     // Game loop
 	while( !glfwWindowShouldClose( window )){
 		
@@ -135,16 +141,16 @@ int main(){
         
         //Draw the loaded model
         glm::mat4 model1,model2;
-        model1 = glm::translate( model1, glm::vec3( 0.0f, 0.0f, 0.0f)); // Translate it down a bit so it's at the center of the scene
-        model1 = glm::scale( model1, glm::vec3( 0.2f, 0.2f, 0.2f));	// It's a bit too big for our scene, so scale it down
+        model1 = glm::translate( model1, glm::vec3( movement_car_foward, 0.0f, 0.0f)); // Translate it down a bit so it's at the center of the scene
+        model1 = glm::rotate(model1, rotate_road, glm::vec3( 0, 1, 0 ));
+        model1 = glm::scale( model1, glm::vec3( 0.8f, 0.8f, 0.8f));	// It's a bit too big for our scene, so scale it down
+        
+       
+        model2 = glm::translate( model2, glm::vec3(7.0f, 0.0f, 0.0f)); // Translate it down a bit so it's at the center of the scene
+        model2 = glm::rotate(model2, rotate_car, glm::vec3( 0, 1, 0 ));
+        model2 = glm::scale( model2, glm::vec3( 0.4f, 0.4f, 0.4f));	// It's a bit too big for our scene, so scale it down
         glUniformMatrix4fv( glGetUniformLocation( shader.Program, "model" ), 1, GL_FALSE, glm::value_ptr( model1 ) );
         ourModel1.Draw( shader );
-       
-        //Draw the second loeaded model
-        model2 = glm::translate( model2, glm::vec3( 7.0f, 0.0f, 0.0f)); // Translate it down a bit so it's at the center of the scene
-        model2 = glm::rotate(model2, 0.0f, glm::vec3( 0, 1, 0 ));
-        model2 = glm::scale( model2, glm::vec3( 1.0f, 1.0f, 1.0f));	// It's a bit too big for our scene, so scale it down
-      
         glUniformMatrix4fv( glGetUniformLocation( shader.Program, "model" ), 1, GL_FALSE, glm::value_ptr( model2 ) );
         ourModel2.Draw( shader );
         
@@ -160,20 +166,35 @@ int main(){
 void DoMovement( ){
     // Camera controls
     if(keys[GLFW_KEY_W] || keys[GLFW_KEY_UP]){
-        camera.ProcessKeyboard( FORWARD, deltaTime);
+		movement_car_foward = movement_car_foward - (SPEED * deltaTime);
+		//camera.ProcessKeyboard( FORWARD, deltaTime);
     }
     
     if(keys[GLFW_KEY_S] || keys[GLFW_KEY_DOWN]){
-        camera.ProcessKeyboard( BACKWARD, deltaTime );
+		movement_car_foward = movement_car_foward + ((SPEED-8.0f) * deltaTime);
+        //camera.ProcessKeyboard( BACKWARD, deltaTime );
     }
     
     if (keys[GLFW_KEY_A] || keys[GLFW_KEY_LEFT]){
-        camera.ProcessKeyboard( LEFT, deltaTime);
+		//movement_car_right = movement_car_right + (SENSITIVTY * deltaTime);        
+        rotate_road = rotate_road - ((SPEED-10.0f) * deltaTime);
+        //camera.ProcessKeyboard( LEFT, deltaTime);
     }
     
     if(keys[GLFW_KEY_D] || keys[GLFW_KEY_RIGHT]){
-        camera.ProcessKeyboard( RIGHT, deltaTime );
+        //movement_car_right = movement_car_right  - (SENSITIVTY * deltaTime);
+        rotate_road = rotate_road + ((SPEED-10.0f) * deltaTime);      
+        //camera.ProcessKeyboard( RIGHT, deltaTime );
     }
+    if(keys[GLFW_KEY_C]){
+		if(!person_3rd){
+			camera.setPos(5.5f, 0.7f, 0.0f );
+			person_3rd = true;
+		}else{
+			camera.setPos(7.15f, 0.3f, 0.0f );
+			person_3rd = false;
+		}
+	}
 }
 
 // Is called whenever a key is pressed/released via GLFW

@@ -1,19 +1,16 @@
-#pragma once
-
-
+#ifndef CAMERA_H
+#define CAMERA_H
 // Std. Includes
 #include <vector>
 
 // GL Includes
 #define GLEW_STATIC
 #include <GL/glew.h>
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 // Defines several possible options for camera movement. Used as abstraction to stay away from window-system specific input methods
-enum Camera_Movement
-{
+enum Camera_Movement{
     FORWARD,
     BACKWARD,
     LEFT,
@@ -21,19 +18,20 @@ enum Camera_Movement
 };
 
 // Default camera values
-const GLfloat YAW        = -90.0f;
-const GLfloat PITCH      = -30.0f;
-const GLfloat SPEED      =  4.0f;
+const GLfloat YAW        = -3.0f;
+const GLfloat PITCH      = -15.0f;
+const GLfloat SPEED      =  12.0f;
 const GLfloat SENSITIVTY =  0.2f;
 const GLfloat ZOOM       =  45.0f;
 
 // An abstract camera class that processes input and calculates the corresponding Eular Angles, Vectors and Matrices for use in OpenGL
-class Camera
-{
+class Camera{
 public:
     // Constructor with vectors
-    Camera( glm::vec3 position = glm::vec3( 0.0f, 0.0f, 0.0f ), glm::vec3 up = glm::vec3( 0.0f, 1.0f, 0.0f ), GLfloat yaw = YAW, GLfloat pitch = PITCH ) : front( glm::vec3( 0.0f, 0.0f, -1.0f ) ), movementSpeed( SPEED ), mouseSensitivity( SENSITIVTY ), zoom( ZOOM )
-    {
+    Camera( glm::vec3 position = glm::vec3( 0.0f, 0.0f, 0.0f ), 
+		glm::vec3 up = glm::vec3( 0.0f, 1.0f, 0.0f ), GLfloat yaw = YAW, 
+			GLfloat pitch = PITCH ) : front( glm::vec3( 0.0f, 0.0f, -1.0f ) ),
+				movementSpeed( SPEED ), mouseSensitivity( SENSITIVTY ), zoom( ZOOM ){
         this->position = position;
         this->worldUp = up;
         this->yaw = yaw;
@@ -42,8 +40,9 @@ public:
     }
     
     // Constructor with scalar values
-    Camera( GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat upX, GLfloat upY, GLfloat upZ, GLfloat yaw, GLfloat pitch ) : front( glm::vec3( 0.0f, 0.0f, -1.0f ) ), movementSpeed( SPEED ), mouseSensitivity( SENSITIVTY ), zoom( ZOOM )
-    {
+    Camera( GLfloat posX, GLfloat posY, GLfloat posZ, GLfloat upX, GLfloat upY,
+		GLfloat upZ, GLfloat yaw, GLfloat pitch ) : front( glm::vec3( 0.0f, 0.0f, -1.0f ) ),
+			movementSpeed( SPEED ), mouseSensitivity( SENSITIVTY ), zoom( ZOOM ){
         this->position = glm::vec3( posX, posY, posZ );
         this->worldUp = glm::vec3( upX, upY, upZ );
         this->yaw = yaw;
@@ -51,34 +50,32 @@ public:
         this->updateCameraVectors( );
     }
     
+    void setPos(GLfloat posX, GLfloat posY, GLfloat posZ){
+		this->position = glm::vec3( posX, posY, posZ );
+		this->updateCameraVectors( );
+	}
     // Returns the view matrix calculated using Eular Angles and the LookAt Matrix
-    glm::mat4 GetViewMatrix( )
-    {
+    glm::mat4 GetViewMatrix( ){
         return glm::lookAt( this->position, this->position + this->front, this->up );
     }
     
     // Processes input received from any keyboard-like input system. Accepts input parameter in the form of camera defined ENUM (to abstract it from windowing systems)
-    void ProcessKeyboard( Camera_Movement direction, GLfloat deltaTime )
-    {
+    void ProcessKeyboard( Camera_Movement direction, GLfloat deltaTime ){
         GLfloat velocity = this->movementSpeed * deltaTime;
         
-        if ( direction == FORWARD )
-        {
-            this->position += this->front * velocity;
+        if ( direction == FORWARD ){			
+            this->position = glm::vec3(this->position.x + velocity,this->position.y,this->position.z);
         }
         
-        if ( direction == BACKWARD )
-        {
-            this->position -= this->front * velocity;
+        if ( direction == BACKWARD ){
+			this->position = glm::vec3(this->position.x - velocity,this->position.y,this->position.z);
         }
         
-        if ( direction == LEFT )
-        {
+        if ( direction == LEFT ){
             this->position -= this->right * velocity;
         }
         
-        if ( direction == RIGHT )
-        {
+        if ( direction == RIGHT ){
             this->position += this->right * velocity;
         }
     }
@@ -162,4 +159,4 @@ private:
         this->up = glm::normalize( glm::cross( this->right, this->front ) );
     }
 };
-
+#endif

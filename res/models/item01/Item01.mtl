@@ -20,6 +20,7 @@ Kd 0.50 0.50 0.50
 Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
 Ni 1.00
+map_Kd blue_concrete_texture_02_by_arkaydo-d56fo9v.jpg
 newmtl lambert2SG
 illum 4
 Kd 0.00 0.00 0.00
@@ -52,7 +53,7 @@ Ks 0.21 0.21 0.21
 Ns 18.00
 newmtl phong2SG
 illum 4
-Kd 0.51 0.51 0.51
+Kd 1.00 1.00 1.00
 Ka 0.00 0.00 0.00
 Tf 1.00 1.00 1.00
 Ni 1.00
