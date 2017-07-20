@@ -103,9 +103,8 @@ int main(){
     //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     
     glm::mat4 projection = glm::perspective( camera.GetZoom( ), ( float )SCREEN_WIDTH/( float )SCREEN_HEIGHT, 0.1f, 500.0f );
-    glm::mat4 model2;
-    //Draw the second loaded model
-        
+     
+    
     // Game loop
 	while( !glfwWindowShouldClose( window )){
 		
@@ -175,16 +174,29 @@ void DoMovement( ){
         //camera.ProcessKeyboard( BACKWARD, deltaTime );
     }
     
-    if (keys[GLFW_KEY_A] || keys[GLFW_KEY_LEFT]){
-		//movement_car_right = movement_car_right + (SENSITIVTY * deltaTime);        
-        rotate_road = rotate_road - ((SPEED-10.0f) * deltaTime);
-        //camera.ProcessKeyboard( LEFT, deltaTime);
+    if (keys[GLFW_KEY_A] || keys[GLFW_KEY_LEFT]){ 
+		movement_car_foward = movement_car_foward - ((SPEED-8.0f) * deltaTime);   
+        rotate_road -= 0.0004f;
+        if( rotate_road > 89.0f ){
+			rotate_road = 89.0f;
+        }
+		if ( rotate_road < -89.0f ){
+			rotate_road= -89.0f;
+		}
+		
+		//camera.ProcessKeyboard( LEFT, deltaTime);
     }
     
     if(keys[GLFW_KEY_D] || keys[GLFW_KEY_RIGHT]){
-        //movement_car_right = movement_car_right  - (SENSITIVTY * deltaTime);
-        rotate_road = rotate_road + ((SPEED-10.0f) * deltaTime);      
-        //camera.ProcessKeyboard( RIGHT, deltaTime );
+		movement_car_foward = movement_car_foward +((SPEED-8.0f) * deltaTime);
+        rotate_road += 0.0004f;      
+		if( rotate_road > 89.0f ){
+			rotate_road = 89.0f;
+        }
+		if ( rotate_road < -89.0f ){
+			rotate_road= -89.0f;
+		}
+		//camera.ProcessKeyboard( RIGHT, deltaTime );
     }
     if(keys[GLFW_KEY_C]){
 		if(!person_3rd){
