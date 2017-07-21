@@ -28,6 +28,7 @@ Ks 0.100000 0.100000 0.100000
 Ni 1.000000
 d 1.000000
 illum 2
+map_Kd fe0_wheel.png
 
 newmtl body
 Ns 96.078431
@@ -78,7 +79,7 @@ Ks 0.047059 0.046667 0.046667
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd steering.jpg
+map_Kd steering_wheel.png
 
 
 newmtl tread
@@ -89,3 +90,4 @@ Ks 0.006667 0.006667 0.006667
 Ni 1.000000
 d 1.000000
 illum 2
+map_Kd tread_slick.png

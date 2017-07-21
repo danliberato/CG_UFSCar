@@ -1,5 +1,49 @@
 # Blender MTL File: 'AIC.blend'
-# Material Count: 272
+# Material Count: 281
+
+newmtl Material.001
+Ns 94.117647
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd ground_grass_3264_4062_Small.jpg
+
+newmtl Material.002
+Ns 94.117647
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd ground_grass_3264_4062_Small.jpg
+
+newmtl Material.004
+Ns 94.117647
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd ground_grass_3264_4062_Small.jpg
+
+newmtl Material.005
+Ns 94.117647
+Ka 1.000000 1.000000 1.000000
+Kd 0.640000 0.640000 0.640000
+Ks 0.000000 0.000000 0.000000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd ground_grass_3264_4062_Small.jpg
 
 newmtl None
 Ns 0
@@ -8,7 +52,7 @@ Kd 0.8 0.8 0.8
 Ks 0.8 0.8 0.8
 d 1
 illum 2
-map_Kd DamageDecal\TextDamageDecal5.png
+map_Kd Roadstraight.jpg
 
 newmtl None_CordonMedium.jpg.001
 Ns 0
@@ -1828,6 +1872,60 @@ d 1
 illum 2
 map_Kd LineaFrenadoDecal.png
 
+newmtl None_LineaFrenadoDecal.png.001
+Ns 0
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+illum 2
+map_Kd LineaFrenadoDecal.png
+
+newmtl None_LineaFrenadoDecal.png.002
+Ns 0
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+illum 2
+map_Kd LineaFrenadoDecal.png
+
+newmtl None_LineaFrenadoDecal.png.003
+Ns 0
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+illum 2
+map_Kd LineaFrenadoDecal.png
+
+newmtl None_LineaFrenadoDecal.png.004
+Ns 0
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+illum 2
+map_Kd LineaFrenadoDecal.png
+
+newmtl None_LineaFrenadoDecal.png.005
+Ns 0
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+illum 2
+map_Kd LineaFrenadoDecal.png
+
+newmtl None_LineaFrenadoDecal.png.006
+Ns 0
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+illum 2
+map_Kd LineaFrenadoDecal.png
+
 newmtl None_NONE
 Ns 0
 Ka 0.000000 0.000000 0.000000
@@ -1835,15 +1933,6 @@ Kd 0.8 0.8 0.8
 Ks 0.8 0.8 0.8
 d 1
 illum 2
-
-newmtl None_Roads0069_9_S.jpg
-Ns 0
-Ka 0.000000 0.000000 0.000000
-Kd 0.8 0.8 0.8
-Ks 0.8 0.8 0.8
-d 1
-illum 2
-map_Kd Roadstraight.jpg
 
 newmtl None_Roads0069_9_S.jpg.002
 Ns 0
