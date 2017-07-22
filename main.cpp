@@ -35,7 +35,6 @@ void DoMovement( );
 // Camera
 Camera camera( glm::vec3( 7.15f, 0.3f, 0.0f ) );
 bool keys[1024];
-glm::mat4 model2;
 GLfloat lastX = WIDTH/2, lastY = HEIGHT/2;
 bool firstMouse = true;
 
@@ -97,7 +96,9 @@ int main(){
     Model ourModel2("res/models/Ferrari/ferrari-f1-race-car.obj");
     
     // Load models
-	Model ourModel1( "res/models/Roads/AIC.obj" );
+	Model ourModel1( "res/models/Roads/AIC.obj");
+	
+	
     // Draw in wireframe
     //glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
     
@@ -138,18 +139,18 @@ int main(){
         glUniformMatrix4fv( glGetUniformLocation( shader.Program, "view" ), 1, GL_FALSE, glm::value_ptr( view ) );
         
         //Draw the loaded model
-        glm::mat4 model1,model2;
-        model1 = glm::translate( model1, glm::vec3( movement_car_foward, 0.0f, 0.0f)); // Translate it down a bit so it's at the center of the scene
-        model1 = glm::rotate(model1, rotate_road, glm::vec3( 0, 1, 0 ));
-        model1 = glm::scale( model1, glm::vec3( 0.8f, 0.8f, 0.8f));	// It's a bit too big for our scene, so scale it down
+        glm::mat4 modelTrack,modelCar;
+        modelTrack = glm::translate( modelTrack, glm::vec3( movement_car_foward, 0.0f, 0.0f)); // Translate it down a bit so it's at the center of the scene
+        modelTrack = glm::rotate(modelTrack, rotate_road, glm::vec3( 0, 1, 0 ));
+        modelTrack = glm::scale( modelTrack, glm::vec3( 0.8f, 0.8f, 0.8f));	// It's a bit too big for our scene, so scale it down
         
        
-        model2 = glm::translate( model2, glm::vec3(7.0f, 0.0f, 0.0f)); // Translate it down a bit so it's at the center of the scene
-        model2 = glm::rotate(model2, rotate_car, glm::vec3( 0, 1, 0 ));
-        model2 = glm::scale( model2, glm::vec3( 0.4f, 0.4f, 0.4f));	// It's a bit too big for our scene, so scale it down
-        glUniformMatrix4fv( glGetUniformLocation( shader.Program, "model" ), 1, GL_FALSE, glm::value_ptr( model1 ) );
+        modelCar = glm::translate( modelCar, glm::vec3(7.0f, 0.0f, 0.0f)); // Translate it down a bit so it's at the center of the scene
+        modelCar = glm::rotate(modelCar, rotate_car, glm::vec3( 0, 1, 0 ));
+        modelCar = glm::scale( modelCar, glm::vec3( 0.4f, 0.4f, 0.4f));	// It's a bit too big for our scene, so scale it down
+        glUniformMatrix4fv( glGetUniformLocation( shader.Program, "model" ), 1, GL_FALSE, glm::value_ptr( modelTrack ) );
         ourModel1.Draw( shader );
-        glUniformMatrix4fv( glGetUniformLocation( shader.Program, "model" ), 1, GL_FALSE, glm::value_ptr( model2 ) );
+        glUniformMatrix4fv( glGetUniformLocation( shader.Program, "model" ), 1, GL_FALSE, glm::value_ptr( modelCar ) );
         ourModel2.Draw( shader );
         
         // Swap the buffers
@@ -174,7 +175,7 @@ void DoMovement( ){
     }
     
     if (keys[GLFW_KEY_A] || keys[GLFW_KEY_LEFT]){ 
-		movement_car_foward = movement_car_foward - ((SPEED-8.0f) * deltaTime);   
+		//movement_car_foward = movement_car_foward - ((SPEED-8.0f) * deltaTime);   
         rotate_road -= 0.001f;
         if( rotate_road > 89.0f ){
 			rotate_road = 89.0f;
@@ -195,7 +196,7 @@ void DoMovement( ){
 	}
     
     if(keys[GLFW_KEY_D] || keys[GLFW_KEY_RIGHT]){
-		movement_car_foward = movement_car_foward +((SPEED-8.0f) * deltaTime);
+		//movement_car_foward = movement_car_foward +((SPEED-8.0f) * deltaTime);
         rotate_road += 0.001f;      
 		if( rotate_road > 89.0f ){
 			rotate_road = 89.0f;
